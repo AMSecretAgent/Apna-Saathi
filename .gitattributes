@@ -1,0 +1,16 @@
+# Everything here runs on Linux (the Jetson) even when it is edited on Windows.
+# A CRLF line ending in a shell script makes the kernel read the shebang as
+# "/usr/bin/env bash\r" and fail with "bad interpreter", which is a confusing
+# error a long way from its cause. Force LF for anything executable or parsed.
+*.sh    text eol=lf
+*.py    text eol=lf
+*.patch text eol=lf
+*.tsv   text eol=lf
+*.jsonl text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+
+*.wav binary
+*.png binary
+*.pdf binary

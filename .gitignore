@@ -1,0 +1,37 @@
+# Platform source fetched by setup.sh -- not ours to commit
+vendor/
+
+# Built retrieval index (setup.sh / the app rebuild it from corpus.tsv)
+*.db
+*.db.tmp
+
+# Credentials. The Bhashini keys live in the environment, never in the repo.
+.env
+*.key
+secrets*
+
+__pycache__/
+*.py[codz]
+*.egg-info/
+.venv/
+venv/
+
+# Measurement output
+results/
+*.log
+tegrastats*.log
+
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Human voice recordings. These are real people's voices; publishing them needs
+# their explicit consent, and this repository is intended to become public.
+# Keep them local, measure with them, do not commit them.
+pocketinfer/data/eval_wav/*.wav
+pocketinfer/data/eval_wav_synthetic/*.wav
+
+# Form answers hold a phone number and email address. This repository is
+# public; personal contact details do not belong in it.
+submission/FORM_ANSWERS.md
