@@ -1,106 +1,212 @@
-# Suno Sutra Software
+# Apna Saathi
+### Offline, Multilingual AI for Inclusive Rural Communities
 
-This repository contains all of the software required to prepare and operate a Suno Sutra pocket inference device. Suno Sutra is an open platform for running local AI inference at the edge. This software project can be used to quickly develop an application that takes audiovisual input from the world and runs it through one or more AI models.
+**Think Global, Hack Local — Technology for Social Transformation**
 
-At it's core, Suno Sutra is an embedded linux device with application code running in Python. The python module can be used to describe applications that communicate with the UI (screen, buttons, microphone, speaker) and run AI inference on an array of supported models. Since this is an embedded linux project, users can also simply shell into the device and install whatever software they like. However the application framework aims to simplify and streamline development. Break free from it if you like!
+Apna Saathi is an offline-first, voice-enabled AI assistant designed to make essential information accessible to underserved and rural communities in India.
 
-<a href="./assets/SunoSutra High-level Software Architecture.png"><img src="./assets/SunoSutra High-level Software Architecture.png" width="80%"></img></a>
+It addresses barriers such as limited internet connectivity, language differences, low digital literacy, and the complexity of navigating public services.
 
-# Software Components / Navigation
+The goal is simple: **Make technology accessible to everyone, regardless of language, literacy, location, or connectivity.**
 
-* [rootfs](./rootfs/) For information about how to prepare a Root Filesystem image, to install dependencies or update dependencies.
-* [python](./python/) For information about the python library, which includes the Hardware Abstraction Layer (HAL), application templates and registry, model wrappers, application code and service.
-* [Python templates](./python/pocketinfer/applications/) for defining applications to run on device
-* A [Python service](./python/pocketinfer/service.py) that can serve applications on the device
-* [ioexpander](./ioexpander/) firmware relating to the IO Expander component.
+## The Problem
 
-# Quickstart
+Millions of people face challenges accessing essential digital services due to:
 
-## Running the application
+- Unreliable or unavailable internet connectivity
+- Limited familiarity with smartphones and digital interfaces
+- Language and literacy barriers
+- Difficulty understanding government welfare schemes
+- Limited access to reliable, understandable health information
 
-### Devices with a UI (Handheld)
+Apna Saathi explores how locally deployed AI can help bridge these gaps through accessible, multilingual, voice-based interaction.
 
-The Suno Sutra Demo device and other devices with a screen / UI should boot directly into the application. It could take around 30-60 seconds after applying power, after which the status bar at the bottom should display "ready".
+## Our Solution
 
-Operation will depend on the default application. For example, for the "Hear the World" application, follow these steps:
-1. Aim the device at a scene of interest
-1. Press down the trigger button. The device will snap a photo.
-1. Ask a question about your environment
-1. Release the trigger button
-1. After a short delay, the device will show the answer on the screen and read it back on the speaker
+Apna Saathi provides a conversational interface through which users can ask questions in their preferred language and receive spoken responses without requiring continuous internet access.
 
-Press the back button (left-most button on the rear of the device) to open up the setings UI. You can use the touchscreen or device buttons to navigate. For the "Hear the World" demo, the input and output languages can be changed. And the settings UI can be used to switch between other applications. 
+The system is designed for deployment on compact edge-computing hardware, making it suitable for community centres, rural households, and assisted-service environments.
 
-### Devices without a UI (Development Board)
+## Key Features
 
-The development board lacks a screen / UI, so it must be activated using a SSH console. The primary method of interaction is to manually execute the `pocketinfer-service` application and watch it's output.
+| Feature | Description |
+|---|---|
+| Offline-first AI | Processes supported requests locally without continuous cloud connectivity |
+| Voice interaction | Enables interaction without typing or navigating complex menus |
+| Multilingual support | Designed for Hindi and additional Indian-language workflows |
+| Welfare assistance | Provides guidance on government schemes and public benefits |
+| Health information | Offers basic informational guidance and encourages appropriate medical care |
+| OCR and visual assistance | Supports camera-based text recognition |
+| Edge deployment | Designed for compact computing devices |
+| Safety mechanisms | Includes application-level safeguards and response handling |
 
-If you have not assembled the development kit, see the [SunoSutraDevboard assembly-instructions](https://github.com/currentai-org/suno-sutra-hw/tree/main/SunoSutraDevboard#assembly-instructions)
+## System Architecture
 
-1. Connect a USB cable to a Suno Sutra prototype device.
-    * For a Suno Sutra Devboard, connect using the USB-C jack
-    * For a Suno Sutra Demo (or other devices based on the Seeedstudio Mini ReComputer carrier board`), connect using the USB-Micro jack
-    * The device should enumerate as a USB RNDIS (Ethernet) network device, as well as a USB CDC device for fallback terminal access.
-1. Open a terminal and execute `ssh ubuntu@192.168.55.1` with password `ubuntu`. 
-1. Execute `pocketinfer-service` to run the default application
-    * For example, for the "Hear the World" sample application:
-    1. Aim the device at a scene of interest
-    1. Touch the capacitive touch button. The device will snap a photo.
-    1. Ask a question about your environment (using the microphone inside of the camera)
-    1. Release the button
-    1. After a short delay, the device will print the result to the screen read it back on the speaker
+The application combines audio processing, language models, retrieval, vision processing, and device-level interaction.
 
-For other options, see `pocketinfer-service --help`
+```text
+User
+  |
+  v
+Voice / Camera Input
+  |
+  +---- Speech Recognition
+  |
+  +---- OCR / Vision Processing
+  |
+  v
+Language and Query Processing
+  |
+  v
+Information Retrieval
+  |
+  v
+Local AI Inference
+  |
+  v
+Safety and Response Processing
+  |
+  v
+Text-to-Speech / Device Display
+  |
+  v
+User
+```
 
-## Development Quickstart
+### Core Components
 
-This section implies you have access to a Suno Sutra prototype device and have connected to over USB. The device should enumerate as a USB RNDIS (Ethernet) network device, as well as a USB CDC device for fallback terminal access. 
+- **Application:** `python/pocketinfer/applications/apna_saathi.py`
+- **Speech processing:** `python/pocketinfer/audio.py` and `python/pocketinfer/models/`
+- **Retrieval:** `python/pocketinfer/retrieval.py`
+- **OCR:** `python/pocketinfer/ocr.py`
+- **Vision:** `python/pocketinfer/vision.py`
+- **Safety:** `python/pocketinfer/safety.py`
+- **Device integration:** `python/pocketinfer/boards/`
+- **User interface:** `python/pocketinfer/ui/`
 
-The easiest way to get up and running is to SSH into the device by executing `ssh ubuntu@192.168.55.1` with password `ubuntu`. Then the software can be edited directly on the device's filesystem. You could consider using VSCode with the Remote - SSH extension. For simplicity here's a sample way to get started that's fully terminal-based:
+## Repository Structure
 
-* Open a terminal and execute `ssh ubuntu@192.168.55.1` with password `ubuntu`
-* Execute `cd ~/pocket-infer-sw/python/ && ls` to navigate to the python module you'll want to be editing
-* Create a new application from the template by executing `cp applications/hear_the_world_en.py applications/<new name>.py`
-* Edit the file with `vim applications/<new name>.py`. Rename the class from `HearTheWorldEn` to the name of your new application
-* Edit the application manifest (which follows after `@RegisterApplication`). Update the name/description fields accordingly, and select any models and service_dependencies required by the application
-* Implement your desired application in the `run(self)` method of the Application class - see comments for examples and tips
-* Launch the application:
-    * For the Suno Sutra Demo or devices with UI: Execute `sudo systemctl restart pocketinfer && journalctl -f -u pocketinfer` to restart the system service and view live logs. Use the device UI to activate the new application, and then watch the terminal 
-    * For the Suno Sutra Devboard or devices without a UI: Execute `pocketinfer-service --app <new name>` to run the new application
+```text
+Apna-Saathi/
+├── python/
+│   ├── pocketinfer/
+│   │   ├── applications/
+│   │   ├── boards/
+│   │   ├── models/
+│   │   ├── data/
+│   │   ├── ui/
+│   │   ├── ocr.py
+│   │   ├── retrieval.py
+│   │   ├── safety.py
+│   │   └── vision.py
+│   ├── tools/
+│   ├── requirements.txt
+│   └── setup.py
+├── ioexpander/
+├── rootfs/
+├── assets/
+├── LICENSE
+└── README.md
+```
 
-## Hardware / Software Support
+## Installation and Setup
 
-Suno Sutra was originally developed for the NVIDIA Jetson Orin Nano 8GB module, on Jetpack 6.2. However this project aims to be flexible to the underlying platform and support may be added for more platforms in the future. Here's the current status:
+### Prerequisites
 
-Platform:
-* NVIDIA Jetson / Jetpack 6.2: Fully Supported
-    * Other Jetpack versions: Untested
-* Raspberry Pi 5: Not Supported yet
-* Generic Linux: Not Supported Yet
+- Python 3 and a compatible environment
+- Supported audio input and output devices
+- Required speech, language, and inference dependencies
+- Compatible edge hardware for device deployment
+- Model assets required by the selected inference pipeline
 
-Module:
-* NVIDIA Jetson Orin Nano 8GB: Fully Supported
-* NVIDIA Jetson Orin NX 8GB: In progress
-* NVIDIA Jetson Orin NX 16GB: In progress
-* NVIDIA jetson Thor: Not Supported Yet
-* Raspberry Pi CM5: Not Supported Yet
-* Hailo-10L: Not Supported Yet
+### Python Environment
 
-Motherboard / Carrier Board / Development Board:
-* NVIDIA Orin Nano 8GB Super Development Kit: Fully Supported
-* Seeeedstudio ReComputer Mini Carrier Board: Fully Supported
-* Waveshare NVIDIA Orin NX 16GB Development Kit: In Progress
+```bash
+git clone https://github.com/AMSecretAgent/Apna-Saathi.git
+cd Apna-Saathi/python
 
-# Contribution / Development Tips
+python3 -m venv .venv
+source .venv/bin/activate
 
-### Platform
+python -m pip install -r requirements.txt
+```
 
-To add support for a new platform, you will need to first define a base system image to start from. For the Jetson, this is the image provided by JetPack. Then starting from this base image, the Ansible roles in the [rootfs/roles](./rootfs/roles/) folder will need to be updated / specified.
+On Windows, activate the environment using:
 
-Then it will be likely that a new board object will need to be created to capture any differences in the new platform. The new board object should be a subclass of the base Board object. Also be sure to update the `Board.get_board()` classmethod with code to auto-detect the new board.
+```cmd
+.venv\Scripts\activate
+```
 
-### Model
+**Note:** Installing Python requirements alone does not guarantee a runnable deployment. Hardware-specific drivers, model weights, inference services, and device configuration may also be required. Some large model archives are distributed separately rather than included in this repository.
 
-To add support for a new model, first add an ansible role that will pull down any necessary system dependencies. If the new model requires a different set of python dependencies from [this module's requirements](./python/requirements.txt), then it's recommended to install and run the model from it's own virtual environment and create a simple API service.
+## Sample Data
 
-Next write a new model python class, subclassed on the base model class. Define a `verify()` classsmethod that can check that the model is available and reayd for use. Define an `update()` classmethod that can be used to download any models or updates to the model. The `args` argument to these methods is a dictionary containing whatever values are specified in the application manifest decorator. So it may be helpful to also spin up a test application.
+The repository contains data for application evaluation and retrieval:
+
+- `python/pocketinfer/data/corpus.tsv` — information retrieval corpus
+- `python/pocketinfer/data/eval.jsonl` — evaluation examples
+
+These resources support reproducible testing and development.
+
+## Testing and Evaluation
+
+The following scripts are included:
+
+| Script | Purpose |
+|---|---|
+| `eval_apna_saathi.py` | Application evaluation |
+| `make_canned.py` | Preparation of canned test resources |
+| `probe_bhashini.py` | Language-service integration diagnostics |
+| `watch_queries.py` | Query observation and debugging |
+
+The evaluation script can be inspected or invoked using:
+
+```bash
+cd python
+python tools/eval_apna_saathi.py --help
+```
+
+Exact test execution depends on the script's supported arguments, installed dependencies, and available models.
+
+Evaluation should consider response relevance, language handling, offline operation, safety, and device-level usability.
+
+## Social Impact and Digital Inclusion
+
+Apna Saathi aligns with the **Digital Inclusion** theme of Hack for Social Cause under VBYLD 2027.
+
+It aims to support more equitable access to information through:
+
+- Accessibility for people with limited digital literacy
+- Language-inclusive interaction
+- Reduced dependence on internet connectivity
+- Easier access to welfare-related information
+- Locally deployable technology for underserved communities
+
+The project contributes toward the broader vision of **Viksit Bharat 2047** and is relevant to UN Sustainable Development Goals including SDG 3, SDG 9, SDG 10, and SDG 16.
+
+## Limitations
+
+Apna Saathi is an assistive information system, not a replacement for qualified healthcare professionals or official government authorities.
+
+Government scheme eligibility, application procedures, and medical guidance should be verified against authoritative sources.
+
+Performance and language availability depend on the deployed models and hardware configuration.
+
+## Open Source and Licensing
+
+See the repository's `LICENSE` file for applicable licensing terms.
+
+This project includes and adapts components of an existing open-source software platform. Original third-party copyright notices, licenses, and attribution requirements remain applicable to those components.
+
+## Project Vision
+
+**Technology should adapt to people, not require people to adapt to technology.**
+
+Apna Saathi explores how multilingual, offline-first AI can make essential digital services more accessible, understandable, and inclusive.
+
+---
+
+**Project:** Apna Saathi  
+**Theme:** Digital Inclusion  
+**Initiative:** Hack for Social Cause — VBYLD 2027  
+**Repository:** https://github.com/AMSecretAgent/Apna-Saathi
