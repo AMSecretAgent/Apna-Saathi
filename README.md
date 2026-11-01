@@ -1,88 +1,90 @@
 # Apna Saathi
-### Offline, Multilingual AI for Inclusive Rural Communities
+### Offline, Multilingual AI for Accessible Communities
 
-**Think Global, Hack Local — Technology for Social Transformation**
+**Making essential information accessible, regardless of language, literacy, or connectivity.**
 
-Apna Saathi is an offline-first, voice-enabled AI assistant designed to make essential information accessible to underserved and rural communities in India.
+## Overview
 
-It addresses barriers such as limited internet connectivity, language differences, low digital literacy, and the complexity of navigating public services.
+Apna Saathi is an offline-first, voice-enabled AI assistant designed to bridge the digital divide in rural and underserved communities.
 
-The goal is simple: **Make technology accessible to everyone, regardless of language, literacy, location, or connectivity.**
+Millions of people face challenges accessing essential information due to language barriers, limited digital literacy, unreliable internet connectivity, and complex digital interfaces.
+
+Apna Saathi addresses these challenges through a multilingual, conversational interface that allows users to interact with technology naturally, without depending on smartphones, continuous internet access, or advanced technical knowledge.
 
 ## The Problem
 
-Millions of people face challenges accessing essential digital services due to:
+Despite the expansion of digital services, accessibility remains a significant challenge for underserved communities.
 
-- Unreliable or unavailable internet connectivity
-- Limited familiarity with smartphones and digital interfaces
-- Language and literacy barriers
-- Difficulty understanding government welfare schemes
-- Limited access to reliable, understandable health information
+Common barriers include:
 
-Apna Saathi explores how locally deployed AI can help bridge these gaps through accessible, multilingual, voice-based interaction.
+- Limited or unreliable internet connectivity
+- Low digital and technological literacy
+- Language barriers in accessing digital information
+- Complex government service procedures
+- Difficulty finding understandable health and welfare information
+- Dependence on intermediaries for basic digital assistance
 
 ## Our Solution
 
-Apna Saathi provides a conversational interface through which users can ask questions in their preferred language and receive spoken responses without requiring continuous internet access.
+Apna Saathi brings AI-powered assistance directly to communities through an offline-capable, voice-first system.
 
-The system is designed for deployment on compact edge-computing hardware, making it suitable for community centres, rural households, and assisted-service environments.
+Users can ask questions verbally and receive responses in accessible language. The system combines speech recognition, multilingual processing, information retrieval, local AI inference, and speech synthesis.
+
+Its architecture is designed for deployment on compact edge-computing devices.
 
 ## Key Features
 
 | Feature | Description |
 |---|---|
-| Offline-first AI | Processes supported requests locally without continuous cloud connectivity |
-| Voice interaction | Enables interaction without typing or navigating complex menus |
-| Multilingual support | Designed for Hindi and additional Indian-language workflows |
-| Welfare assistance | Provides guidance on government schemes and public benefits |
-| Health information | Offers basic informational guidance and encourages appropriate medical care |
-| OCR and visual assistance | Supports camera-based text recognition |
-| Edge deployment | Designed for compact computing devices |
-| Safety mechanisms | Includes application-level safeguards and response handling |
+| Offline-first operation | Supports local processing without continuous internet connectivity |
+| Voice-first interaction | Reduces dependence on reading, typing, and complex interfaces |
+| Multilingual assistance | Supports Hindi-oriented workflows and additional Indian-language capabilities |
+| Government welfare guidance | Provides information about public schemes and benefits |
+| Health information | Offers basic health-related guidance with safety considerations |
+| OCR capabilities | Extracts text from camera input |
+| Edge AI | Runs supported inference workloads locally |
+| Information retrieval | Retrieves relevant information from structured local knowledge resources |
+| Safety mechanisms | Includes safeguards for sensitive queries and response handling |
 
 ## System Architecture
 
-The application combines audio processing, language models, retrieval, vision processing, and device-level interaction.
-
 ```text
-User
-  |
-  v
-Voice / Camera Input
-  |
-  +---- Speech Recognition
-  |
-  +---- OCR / Vision Processing
-  |
-  v
-Language and Query Processing
-  |
-  v
-Information Retrieval
-  |
-  v
-Local AI Inference
-  |
-  v
-Safety and Response Processing
-  |
-  v
-Text-to-Speech / Device Display
-  |
-  v
-User
+             USER
+               |
+       Voice / Camera Input
+               |
+       +-------+-------+
+       |               |
+ Speech Recognition   OCR
+       |               |
+       +-------+-------+
+               |
+       Language Processing
+               |
+       Information Retrieval
+               |
+         Local AI Model
+               |
+       Safety and Validation
+               |
+       Speech / Display Output
+               |
+             USER
 ```
 
-### Core Components
+### Core Modules
 
-- **Application:** `python/pocketinfer/applications/apna_saathi.py`
-- **Speech processing:** `python/pocketinfer/audio.py` and `python/pocketinfer/models/`
-- **Retrieval:** `python/pocketinfer/retrieval.py`
-- **OCR:** `python/pocketinfer/ocr.py`
-- **Vision:** `python/pocketinfer/vision.py`
-- **Safety:** `python/pocketinfer/safety.py`
-- **Device integration:** `python/pocketinfer/boards/`
-- **User interface:** `python/pocketinfer/ui/`
+| Component | File |
+|---|---|
+| Main application | `python/pocketinfer/applications/apna_saathi.py` |
+| Audio processing | `python/pocketinfer/audio.py` |
+| Speech and language models | `python/pocketinfer/models/` |
+| OCR | `python/pocketinfer/ocr.py` |
+| Vision processing | `python/pocketinfer/vision.py` |
+| Knowledge retrieval | `python/pocketinfer/retrieval.py` |
+| Safety handling | `python/pocketinfer/safety.py` |
+| Hardware interface | `python/pocketinfer/boards/` |
+| User interface | `python/pocketinfer/ui/` |
 
 ## Repository Structure
 
@@ -95,6 +97,7 @@ Apna-Saathi/
 │   │   ├── models/
 │   │   ├── data/
 │   │   ├── ui/
+│   │   ├── audio.py
 │   │   ├── ocr.py
 │   │   ├── retrieval.py
 │   │   ├── safety.py
@@ -111,102 +114,104 @@ Apna-Saathi/
 
 ## Installation and Setup
 
-### Prerequisites
+### Requirements
 
-- Python 3 and a compatible environment
-- Supported audio input and output devices
-- Required speech, language, and inference dependencies
-- Compatible edge hardware for device deployment
-- Model assets required by the selected inference pipeline
+- Python 3 with a compatible environment
+- Required Python dependencies
+- Compatible microphone and speaker
+- Supported edge-computing hardware for device deployment
+- Appropriate speech, language, and inference models
+- Hardware-specific drivers and services where applicable
 
-### Python Environment
+### Clone the Repository
 
 ```bash
 git clone https://github.com/AMSecretAgent/Apna-Saathi.git
-cd Apna-Saathi/python
+cd Apna-Saathi
+```
 
+### Set Up the Python Environment
+
+```bash
+cd python
 python3 -m venv .venv
 source .venv/bin/activate
-
 python -m pip install -r requirements.txt
 ```
 
-On Windows, activate the environment using:
+On Windows, activate using:
 
 ```cmd
 .venv\Scripts\activate
 ```
 
-**Note:** Installing Python requirements alone does not guarantee a runnable deployment. Hardware-specific drivers, model weights, inference services, and device configuration may also be required. Some large model archives are distributed separately rather than included in this repository.
+### Hardware Deployment
+
+The project includes device integration and provisioning resources under `python/pocketinfer/boards/` and `rootfs/`.
+
+Hardware deployment requires the appropriate device configuration, model assets, runtime dependencies, and peripheral setup.
+
+Large pretrained model archives are not bundled with the source repository. A fully operational deployment may require additional model installation and configuration.
 
 ## Sample Data
 
-The repository contains data for application evaluation and retrieval:
+The repository includes:
 
-- `python/pocketinfer/data/corpus.tsv` — information retrieval corpus
+- `python/pocketinfer/data/corpus.tsv` — structured knowledge corpus for retrieval
 - `python/pocketinfer/data/eval.jsonl` — evaluation examples
 
-These resources support reproducible testing and development.
+These files support experimentation, retrieval testing, and application evaluation.
 
 ## Testing and Evaluation
 
-The following scripts are included:
+The repository contains development and evaluation utilities:
 
-| Script | Purpose |
+| File | Purpose |
 |---|---|
-| `eval_apna_saathi.py` | Application evaluation |
-| `make_canned.py` | Preparation of canned test resources |
-| `probe_bhashini.py` | Language-service integration diagnostics |
-| `watch_queries.py` | Query observation and debugging |
+| `python/tools/eval_apna_saathi.py` | Application evaluation |
+| `python/tools/make_canned.py` | Preparation of test resources |
+| `python/tools/probe_bhashini.py` | Language-service diagnostics |
+| `python/tools/watch_queries.py` | Query monitoring and debugging |
 
-The evaluation script can be inspected or invoked using:
+The exact execution options and expected results depend on the installed runtime, available models, and script configuration.
 
-```bash
-cd python
-python tools/eval_apna_saathi.py --help
-```
+Testing areas include retrieval relevance, multilingual processing, response safety, and device interaction.
 
-Exact test execution depends on the script's supported arguments, installed dependencies, and available models.
+## Accessibility and Social Impact
 
-Evaluation should consider response relevance, language handling, offline operation, safety, and device-level usability.
+Apna Saathi is designed around the principle that access to useful technology should not depend on someone's ability to read, speak English, own a smartphone, or maintain a reliable internet connection.
 
-## Social Impact and Digital Inclusion
+Its potential applications include:
 
-Apna Saathi aligns with the **Digital Inclusion** theme of Hack for Social Cause under VBYLD 2027.
+- Rural household assistance
+- Community information centres
+- Assisted access to government services
+- Multilingual public-information delivery
+- Digital literacy support
+- Offline information access in connectivity-constrained environments
 
-It aims to support more equitable access to information through:
+## Limitations and Responsible Use
 
-- Accessibility for people with limited digital literacy
-- Language-inclusive interaction
-- Reduced dependence on internet connectivity
-- Easier access to welfare-related information
-- Locally deployable technology for underserved communities
+Apna Saathi provides informational assistance and does not replace qualified medical professionals, official government authorities, or emergency services.
 
-The project contributes toward the broader vision of **Viksit Bharat 2047** and is relevant to UN Sustainable Development Goals including SDG 3, SDG 9, SDG 10, and SDG 16.
+Responses concerning healthcare, eligibility, or government procedures should be verified through appropriate authoritative sources.
 
-## Limitations
+Actual offline performance, supported languages, and response quality depend on the deployed hardware and models.
 
-Apna Saathi is an assistive information system, not a replacement for qualified healthcare professionals or official government authorities.
+## Open Source and License
 
-Government scheme eligibility, application procedures, and medical guidance should be verified against authoritative sources.
+This repository contains open-source application code and adapted third-party components.
 
-Performance and language availability depend on the deployed models and hardware configuration.
+See `LICENSE` for the applicable license. Original copyright notices and legally required third-party attributions remain applicable.
 
-## Open Source and Licensing
+## Vision
 
-See the repository's `LICENSE` file for applicable licensing terms.
+**Technology should adapt to people, not the other way around.**
 
-This project includes and adapts components of an existing open-source software platform. Original third-party copyright notices, licenses, and attribution requirements remain applicable to those components.
-
-## Project Vision
-
-**Technology should adapt to people, not require people to adapt to technology.**
-
-Apna Saathi explores how multilingual, offline-first AI can make essential digital services more accessible, understandable, and inclusive.
+Apna Saathi aims to make artificial intelligence more accessible through multilingual, offline-first, human-centred interaction.
 
 ---
 
 **Project:** Apna Saathi  
-**Theme:** Digital Inclusion  
-**Initiative:** Hack for Social Cause — VBYLD 2027  
+**Focus:** Offline AI · Multilingual Accessibility · Digital Inclusion · Edge Computing  
 **Repository:** https://github.com/AMSecretAgent/Apna-Saathi
