@@ -7,7 +7,7 @@ Pipeline, all on-device, no network:
       ASR      (bhashini /asr)      Hindi speech  -> Devanagari text
       NMT      (bhashini /nmt)      Hindi text    -> English query
       RETRIEVE (sqlite FTS5)        English query -> 0-2 grounding paragraphs
-      LLM      (ollama, 2B)         facts + question -> <=2 English sentences
+      LLM      (gemma, 2B)         facts + question -> <=2 English sentences
       SHAPE                         bounded, single line, no markdown
       NMT      (bhashini /nmt)      English       -> Hindi answer
       TTS      (bhashini /tts)      Hindi text    -> speech
@@ -41,7 +41,7 @@ from pocketinfer.models.asr import Asr
 from pocketinfer.models.whisper import Whisper
 from pocketinfer.models.nmt import Nmt
 from pocketinfer.models.tts import Tts
-from pocketinfer.models.ollama import Ollama
+from pocketinfer.models.gemma import gemma
 
 
 DATA = Path(__file__).resolve().parent.parent / "data"
@@ -68,7 +68,7 @@ LOGDIR = Path("/tmp/apna_saathi_logs")
 # on the fast model and only what it cannot hear goes to Whisper. See _hear().
 CONFORMER_LANGS = {"hi", "ta"}
 
-# Every layer of the language model on the GPU, always. Ollama otherwise
+# Every layer of the language model on the GPU, always. MODEL = "gemma3:1b" otherwise
 # "fits" the model to free memory at load time and keeps a 1 GiB margin; with
 # bhashini and whisper resident that margin is not there, and it quietly moves
 # a quarter of the layers to the CPU: 100% GPU became 29%/71% and the llm stage
@@ -270,7 +270,7 @@ class ShortQuery(Exception):
     "author": "Team Apna Saathi",
     "version": "0.1.0",
     "models": {
-        # qwen3:1.7b since 13 Sept. Measured on this board beside bhashini and
+        # MODEL = "gemma3:1b" since 13 Sept. Measured on this board beside bhashini and
         # whisper, same prompts: qwen2.5:1.5b added "liver cancer" to a
         # discharge summary that did not say it and told a certificate holder
         # to see a doctor; qwen3:1.7b reported what was printed. 100% GPU,
@@ -300,7 +300,7 @@ class ShortQuery(Exception):
         "tts": {},
         # Options ride along so Ollama.verify() pins the model with the same
         # runner the first generate will ask for; otherwise boot loads it twice.
-        "ollama": {"model_name": "qwen3:1.7b",
+        "gemma": {"model_name": "qwen3:1.7b",
                    "options": {"num_ctx": 1024, "num_gpu": LLM_GPU_LAYERS}},
     },
     "default_settings": {
@@ -359,7 +359,7 @@ class ShortQuery(Exception):
         # meaning costs no hardware and turns a failure into a feature.
         "tap_seconds": 0.6,
     },
-    "service_dependencies": ["ollama", "bashini_models"],
+    "service_dependencies": ["gemma", "bashini_models"],
 })
 class ApnaSaathi(BaseApplication):
 
@@ -369,7 +369,7 @@ class ApnaSaathi(BaseApplication):
         self.whisper = Whisper(timeout=max(t, 30.0))
         self.nmt = Nmt(timeout=t)
         self.tts = Tts(timeout=max(t, 30.0))
-        self.ollama = Ollama(model_name=self.METADATA["models"]["ollama"]["model_name"])
+        self.ollama = gemma(model_name=self.METADATA["models"]["ollama"]["model_name"])
 
         # Constructed only when vision is enabled, so a device that never uses
         # the camera never touches the model at all.
